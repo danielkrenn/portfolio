@@ -9,14 +9,14 @@
         header { background: #1a1a1a; color: white; padding: 3rem 1rem; text-align: center; }
         .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
         section { margin-bottom: 3rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1, h2 { color: #1a1a1a; }
+        h1, h2, h3 { color: #1a1a1a; }
         a { color: #0066cc; text-decoration: none; }
         a:hover { text-decoration: underline; }
         ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 1.2rem; }
+        li { margin-bottom: 1rem; }
         .skills { display: flex; flex-wrap: wrap; gap: 10px; }
         .skill-tag { background: #e0e0e0; padding: 8px 16px; border-radius: 20px; font-size: 0.95em; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin: 1rem 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
@@ -34,29 +34,42 @@
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
-            <p>Veteran software engineer with over 25 years of commercial experience in game development and interactive systems. I specialize in building robust, performant architectures — particularly with Unity 3D — and have held lead programmer and technical director roles on multiple shipped titles across PC, console, and mobile platforms.</p>
-            <p>My work spans core gameplay systems, optimization, AI, and scalable engine architecture. Passionate about solving complex technical problems and delivering polished player experiences.</p>
+            <p>Veteran software engineer with over 25 years of commercial experience in game development and interactive systems. Specialist in robust, high-performance architectures using Unity 3D, with extensive leadership in gameplay systems, optimization, AI, and technical direction.</p>
         </section>
 
-        <section id="featured">
-            <h2>Featured Project</h2>
-            <p><strong>The Legend of Spyro: A New Beginning</strong> (Krome Studios)</p>
+        <section id="featured-games">
+            <h2>Featured Games</h2>
+            
+            <h3>The Legend of Spyro: A New Beginning (Krome Studios)</h3>
             <p>Contributed to many core game systems including general gameplay, enemies, bosses, projectile systems, and numerous other gameplay elements.</p>
             <div class="video-container">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/aXYu4V-aGtk" 
-                        title="The Legend of Spyro: A New Beginning Gameplay" 
-                        frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/aXYu4V-aGtk" title="Spyro A New Beginning" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <h3>The Legend of Spyro: The Eternal Night (Krome Studios)</h3>
+            <p>Significant contributions to gameplay systems and technical implementation.</p>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/dqTyfq8PTLs" title="Spyro The Eternal Night" frameborder="0" allowfullscreen></iframe>
             </div>
         </section>
 
         <section id="experience">
-            <h2>Experience Highlights</h2>
+            <h2>Professional Experience</h2>
+            
+            <h3>Lead Programmer / CTO — Visionary Realms (Pantheon Project & others)</h3>
+            <p>Provided technical leadership and hands-on programming for ambitious game projects. Focused on architecture, monthly optimization passes, systems development, and delivering scalable, performant solutions.</p>
+
+            <h3>Senior Programmer / Long-term Developer — Krome Studios Brisbane</h3>
+            <p>Key programming contributor across numerous commercial PC and console titles over many years. Worked on major franchises including <em>The Legend of Spyro</em> series and many others. Developed core gameplay systems, enemies, bosses, projectiles, and a wide range of technical features.</p>
+
+            <h3>Independent Game Developer</h3>
+            <p>Co-founded and developed multiple mobile titles for iOS, handling full-cycle development from concept to release.</p>
             <ul>
-                <li><strong>Lead Programmer / CTO</strong> — Visionary Realms and others: Technical leadership, architecture, performance optimization, and hands-on systems development.</li>
-                <li><strong>Krome Studios Brisbane</strong> — Long-term programmer on numerous commercial titles, including major contributions to <em>The Legend of Spyro: A New Beginning</em> and many others for PC and console.</li>
-                <li><strong>Independent Mobile Development</strong> — Co-developed and released several iOS titles (Venger, Big Booty, Earth Vs Mars, Attack Force).</li>
+                <li>Venger</li>
+                <li>Big Booty</li>
+                <li>Earth Vs Mars</li>
+                <li>Attack Force</li>
             </ul>
-            <p><em>Additional detailed experience and projects available on <a href="https://www.linkedin.com/in/danielkrenn">LinkedIn</a>. Many projects are under NDA — happy to discuss specifics in interviews.</em></p>
         </section>
 
         <section id="skills">
@@ -65,25 +78,26 @@
                 <span class="skill-tag">Unity 3D (Expert)</span>
                 <span class="skill-tag">C#</span>
                 <span class="skill-tag">C++</span>
-                <span class="skill-tag">Gameplay Systems</span>
+                <span class="skill-tag">Gameplay Systems Programming</span>
                 <span class="skill-tag">Performance Optimization</span>
-                <span class="skill-tag">AI & Systems Programming</span>
-                <span class="skill-tag">Multiplayer / Networking</span>
+                <span class="skill-tag">AI Systems</span>
                 <span class="skill-tag">Engine Architecture</span>
                 <span class="skill-tag">Technical Leadership</span>
                 <span class="skill-tag">AI-Native Development</span>
+                <span class="skill-tag">Multiplayer & Networking</span>
             </div>
         </section>
 
         <section id="contact">
             <h2>Contact</h2>
-            <p>I'm currently open to senior/lead game programming opportunities, technical consulting, or interesting collaborations.</p>
-            <p>Best way to reach me: <a href="mailto:dkrenn@gmail.com">dkrenn@gmail.com</a> or via LinkedIn.</p>
+            <p>Open to senior/lead game programming roles, technical consulting, or interesting collaborations in games and interactive software.</p>
+            <p><strong>Email:</strong> <a href="mailto:dkrenn@gmail.com">dkrenn@gmail.com</a></p>
+            <p><a href="https://www.linkedin.com/in/danielkrenn">View full experience on LinkedIn</a></p>
         </section>
     </div>
 
     <footer style="text-align: center; padding: 2rem; background: #1a1a1a; color: white; margin-top: 2rem;">
-        <p>© Daniel Krenn • <a href="https://github.com/danielkrenn" style="color: #aaa;">GitHub</a> • Portfolio hosted on GitHub Pages</p>
+        <p>© Daniel Krenn • Portfolio hosted on GitHub Pages</p>
     </footer>
 </body>
 </html>
