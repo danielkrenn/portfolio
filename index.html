@@ -10,11 +10,14 @@
         .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
         section { margin-bottom: 3rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         h1, h2 { color: #1a1a1a; }
-        a { color: #0066cc; }
+        a { color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
         ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 1rem; }
+        li { margin-bottom: 1.2rem; }
         .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-tag { background: #e0e0e0; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; }
+        .skill-tag { background: #e0e0e0; padding: 8px 16px; border-radius: 20px; font-size: 0.95em; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
@@ -22,62 +25,65 @@
         <h1>Daniel Krenn</h1>
         <p style="font-size: 1.3rem;">Senior Game Programmer & AI-Native Software Engineer</p>
         <p>25+ years crafting high-performance games and interactive software with deep Unity expertise</p>
-        <p><a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | <a href="mailto:your.email@example.com" style="color: white;">Email</a></p>
+        <p>
+            <a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | 
+            <a href="mailto:dkrenn@gmail.com" style="color: white;">dkrenn@gmail.com</a>
+        </p>
     </header>
 
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
-            <p>Veteran software engineer with over 25 years of commercial experience in game development and interactive systems. I specialize in building robust, performant architectures, particularly with Unity 3D, and have led technical direction on multiple shipped titles across PC, console, and mobile platforms.</p>
-            <p>My recent focus includes AI-native development approaches, performance optimization, systems programming, and delivering scalable solutions under tight constraints. Passionate about solving complex technical challenges and mentoring teams to ship high-quality experiences.</p>
+            <p>Veteran software engineer with over 25 years of commercial experience in game development and interactive systems. I specialize in building robust, performant architectures — particularly with Unity 3D — and have held lead programmer and technical director roles on multiple shipped titles across PC, console, and mobile platforms.</p>
+            <p>My work spans core gameplay systems, optimization, AI, and scalable engine architecture. Passionate about solving complex technical problems and delivering polished player experiences.</p>
+        </section>
+
+        <section id="featured">
+            <h2>Featured Project</h2>
+            <p><strong>The Legend of Spyro: A New Beginning</strong> (Krome Studios)</p>
+            <p>Contributed to many core game systems including general gameplay, enemies, bosses, projectile systems, and numerous other gameplay elements.</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/aXYu4V-aGtk" 
+                        title="The Legend of Spyro: A New Beginning Gameplay" 
+                        frameborder="0" allowfullscreen></iframe>
+            </div>
         </section>
 
         <section id="experience">
             <h2>Experience Highlights</h2>
             <ul>
-                <li><strong>Lead Programmer / CTO roles</strong> — Visionary Realms & others: Provided technical leadership, architecture direction, and hands-on implementation for ambitious projects, including regular optimization passes and systems development.</li>
-                <li><strong>Krome Studios Brisbane</strong> — Long-term contributor across numerous commercial titles, working on core programming for PC and console games since the late 1990s.</li>
-                <li><strong>Independent & Mobile</strong> — Co-developed and released multiple iOS titles, demonstrating full-cycle development capabilities.</li>
+                <li><strong>Lead Programmer / CTO</strong> — Visionary Realms and others: Technical leadership, architecture, performance optimization, and hands-on systems development.</li>
+                <li><strong>Krome Studios Brisbane</strong> — Long-term programmer on numerous commercial titles, including major contributions to <em>The Legend of Spyro: A New Beginning</em> and many others for PC and console.</li>
+                <li><strong>Independent Mobile Development</strong> — Co-developed and released several iOS titles (Venger, Big Booty, Earth Vs Mars, Attack Force).</li>
             </ul>
-            <p><em>Full detailed experience available on <a href="https://www.linkedin.com/in/danielkrenn">LinkedIn</a>. Available to discuss specific projects and contributions in interviews (many under NDA).</em></p>
+            <p><em>Additional detailed experience and projects available on <a href="https://www.linkedin.com/in/danielkrenn">LinkedIn</a>. Many projects are under NDA — happy to discuss specifics in interviews.</em></p>
         </section>
 
         <section id="skills">
             <h2>Core Skills & Technologies</h2>
             <div class="skills">
-                <span class="skill-tag">Unity 3D (Advanced)</span>
+                <span class="skill-tag">Unity 3D (Expert)</span>
                 <span class="skill-tag">C#</span>
                 <span class="skill-tag">C++</span>
+                <span class="skill-tag">Gameplay Systems</span>
                 <span class="skill-tag">Performance Optimization</span>
                 <span class="skill-tag">AI & Systems Programming</span>
                 <span class="skill-tag">Multiplayer / Networking</span>
                 <span class="skill-tag">Engine Architecture</span>
                 <span class="skill-tag">Technical Leadership</span>
                 <span class="skill-tag">AI-Native Development</span>
-                <span class="skill-tag">Mobile & PC Development</span>
             </div>
-        </section>
-
-        <section id="projects">
-            <h2>Selected Work</h2>
-            <p>Selected public and representative projects (many others under NDA):</p>
-            <ul>
-                <li><strong>Commercial AAA / AA Titles at Krome Studios</strong> — Core programming contributions across multiple shipped games for PC and consoles.</li>
-                <li><strong>Pantheon-related / Visionary Realms Projects</strong> — Technical leadership and systems implementation with focus on performance and scalability.</li>
-                <li><strong>Mobile Titles (iOS)</strong> — Co-developed and released several games including Venger, Big Booty, Earth Vs Mars, and Attack Force.</li>
-            </ul>
-            <p><strong>Video Showcase:</strong> Links to gameplay footage and older titles available upon request or via YouTube searches for my credited projects.</p>
         </section>
 
         <section id="contact">
             <h2>Contact</h2>
-            <p>I'm open to senior/lead game programming opportunities, consulting, or technical discussions.</p>
-            <p><a href="https://www.linkedin.com/in/danielkrenn">Connect on LinkedIn</a> or email me directly.</p>
+            <p>I'm currently open to senior/lead game programming opportunities, technical consulting, or interesting collaborations.</p>
+            <p>Best way to reach me: <a href="mailto:dkrenn@gmail.com">dkrenn@gmail.com</a> or via LinkedIn.</p>
         </section>
     </div>
 
-    <footer style="text-align: center; padding: 2rem; background: #1a1a1a; color: white;">
-        <p>© Daniel Krenn • Portfolio built with GitHub Pages</p>
+    <footer style="text-align: center; padding: 2rem; background: #1a1a1a; color: white; margin-top: 2rem;">
+        <p>© Daniel Krenn • <a href="https://github.com/danielkrenn" style="color: #aaa;">GitHub</a> • Portfolio hosted on GitHub Pages</p>
     </footer>
 </body>
 </html>
