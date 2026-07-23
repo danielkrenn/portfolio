@@ -7,7 +7,9 @@
     <style>
         :root { --bg: #f4f4f4; --text: #333; --card: white; --accent: #0066cc; }
         [data-theme="dark"] { --bg: #1a1a1a; --text: #e0e0e0; --card: #2a2a2a; --accent: #4da6ff; }
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); line-height: 1.6; transition: background 0.3s, color 0.3s; }
+        html { scroll-behavior: smooth; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); line-height: 1.6; transition: background 0.3s, color 0.3s; height: 100vh; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+        .sticky-header { flex-shrink: 0; position: sticky; top: 0; z-index: 50; }
         header { background: #000; color: white; padding: 3rem 1rem; text-align: center; }
         header h1 { color: #f5c842; margin: 0; }
         [data-theme="dark"] section h2 { color: #f5c842; }
@@ -15,8 +17,8 @@
         nav { background: #222; padding: 0.8rem; text-align: center; }
         nav a { color: white; margin: 0 1rem; text-decoration: none; font-weight: bold; }
         nav a:hover { color: #4da6ff; }
-        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-        section { margin-bottom: 3rem; background: var(--card); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 1rem; width: 100%; box-sizing: border-box; flex: 1; overflow-y: auto; scroll-padding-top: 0; }
+section { margin-bottom: 3rem; background: var(--card); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         h1, h2, h3 { color: var(--text); }
         a { color: var(--accent); }
         ul { list-style-type: none; padding: 0; }
@@ -53,26 +55,28 @@
 <body data-theme="dark">
     <button id="theme-toggle">☀️ Light Mode</button>
 
-    <header>
-        <div class="header-content">
-            <h1><strong>Daniel Krenn</strong></h1>
-            <p style="font-size: 1.3rem; color: #4da6ff;">AI-Native Senior Unity Developer | Game Programmer</p>
-            <p>25+ years crafting memorable player experiences across AAA, indie, and cutting-edge interactive projects</p>
-            <p>
-                <a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | 
-                <a href="mailto:dkrenn@gmail.com" style="color: white;">dkrenn@gmail.com</a> | 
-                +61 438 300 572
-            </p>
-        </div>
-    </header>
+    <div class="sticky-header">
+        <header>
+            <div class="header-content">
+                <h1><strong>Daniel Krenn</strong></h1>
+                <p style="font-size: 1.3rem; color: #4da6ff;">AI-Native Senior Unity Developer | Game Programmer</p>
+                <p>25+ years crafting memorable player experiences across AAA, indie, and cutting-edge interactive projects</p>
+                <p>
+                    <a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | 
+                    <a href="mailto:dkrenn@gmail.com" style="color: white;">dkrenn@gmail.com</a> | 
+                    +61 438 300 572
+                </p>
+            </div>
+        </header>
 
-    <nav>
-        <a href="#about">About</a>
-        <a href="#featured-games">Featured Games</a>
-        <a href="#experience">Experience</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
-    </nav>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#featured-games">Featured Games</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
 
     <div class="container">
         <section id="about">
@@ -242,11 +246,10 @@
             <p>Open to senior / lead opportunities, contract work, or interesting projects in games, simulation, or interactive software.</p>
             <p><strong>Phone:</strong> +61 438 300 572 | <strong>Email:</strong> <a href="mailto:dkrenn@gmail.com">dkrenn@gmail.com</a></p>
         </section>
+        <footer style="text-align: center; padding: 2rem; background: #000; color: white; margin-top: 2rem; border-radius: 8px;">
+            <p>© Daniel Krenn • Portfolio hosted on GitHub Pages</p>
+        </footer>
     </div>
-
-    <footer style="text-align: center; padding: 2rem; background: #000; color: white; margin-top: 2rem;">
-        <p>© Daniel Krenn • Portfolio hosted on GitHub Pages</p>
-    </footer>
 
     <script type="module">
         import * as THREE from 'three';
