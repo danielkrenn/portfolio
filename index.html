@@ -257,56 +257,85 @@
 
         const header = document.querySelector('header');
         const content = header.querySelector('.header-content');
-        const canvas = document.createElement('canvas');
-        canvas.id = 'bg-canvas';
-        header.insertBefore(canvas, content);
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, header.clientWidth / header.clientHeight, 0.1, 100);
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setSize(header.clientWidth, header.clientHeight);
-        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-        function getTheme() { return document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
-
         const DARK_PAL = [0x3d8bdb, 0x6245d8, 0x00a87e, 0xc49e30, 0xb85a3a, 0x8a5ad9];
         const LIGHT_PAL = [0x005bb5, 0x4a33b8, 0x008e6a, 0xaa7e20, 0x9a4a30, 0x7050b3];
 
-        const isMobile = () => header.clientWidth < 768;
-        const GEOS = [
-            new THREE.IcosahedronGeometry(0.85, 0),
-            new THREE.OctahedronGeometry(0.8),
-            new THREE.DodecahedronGeometry(0.75),
-            new THREE.TorusKnotGeometry(0.6, 0.2, isMobile() ? 20 : 40, isMobile() ? 3 : 5),
-            new THREE.TetrahedronGeometry(0.85),
-            new THREE.BoxGeometry(0.9, 0.55, 0.55),
-        ];
-
+        let scene, camera, renderer, canvas, group, ambientLight, dirLight, accentLight;
         const meshes = [];
-        let group, ambientLight, dirLight, accentLight;
+        let running = false, animId = 0, lastFrameTime = 0;
+        let mx = 0, my = 0, tx = 0, ty = 0;
+        let rebuildTimer = 0;
 
-        function buildScene() {
+        function isMobile() { return header.clientWidth < 768; }
+        function getTheme() { return document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+
+        function makeGeos() {
+            const m = isMobile();
+            return [
+                new THREE.IcosahedronGeometry(0.85, 0),
+                new THREE.OctahedronGeometry(0.8),
+                new THREE.DodecahedronGeometry(0.75),
+                new THREE.TorusKnotGeometry(0.6, 0.2, m ? 20 : 40, m ? 3 : 5),
+                new THREE.TetrahedronGeometry(0.85),
+                new THREE.BoxGeometry(0.9, 0.55, 0.55),
+            ];
+        }
+
+        function teardown() {
+            stopAnim();
+            for (const m of meshes) { scene?.remove(m); m.geometry?.dispose(); m.material?.dispose(); }
+            meshes.length = 0;
+            if (renderer) { renderer.dispose(); }
+            document.getElementById('bg-canvas')?.remove();
+            scene = camera = renderer = canvas = group = null;
+            ambientLight = dirLight = accentLight = null;
+        }
+
+        function initScene() {
+            teardown();
+
+            canvas = document.createElement('canvas');
+            canvas.id = 'bg-canvas';
+            header.insertBefore(canvas, content);
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(50, header.clientWidth / header.clientHeight, 0.1, 100);
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile(), powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false });
+            renderer.setSize(header.clientWidth, header.clientHeight);
+            renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+            canvas.addEventListener('webglcontextlost', (e) => {
+                e.preventDefault();
+                stopAnim();
+                clearTimeout(rebuildTimer);
+                rebuildTimer = setTimeout(() => initScene(), 500);
+            });
+
             group = new THREE.Group();
             scene.add(group);
 
+            ambientLight = new THREE.AmbientLight(0x404060, 0.5);
+            scene.add(ambientLight);
+            dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            dirLight.position.set(3, 5, 4);
+            scene.add(dirLight);
+            accentLight = new THREE.DirectionalLight(0x4da6ff, 0.4);
+            accentLight.position.set(-3, 1, 2);
+            scene.add(accentLight);
+
+            const geos = makeGeos();
             const mobile = isMobile();
             const count = mobile ? 6 : 10;
             const minDist = mobile ? 1.5 : 2.0;
-            const sx = 8;
-            const sz = 7;
-            const maxAttempts = 100;
+            const sx = 8, sz = 7, maxAttempts = 100;
 
             for (let i = 0; i < count; i++) {
-                const geo = GEOS[i % GEOS.length];
+                const geo = geos[i % geos.length];
                 const mesh = new THREE.Mesh(geo.clone(), new THREE.MeshStandardMaterial({ flatShading: true, roughness: 0.5, metalness: 0.05 }));
-                const edges = new THREE.EdgesGeometry(geo);
-                mesh.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ transparent: true, opacity: 0.12 })));
-                let x, z, attempts = 0;
-                do {
-                    x = (Math.random() - 0.5) * sx;
-                    z = (Math.random() - 0.5) * sz - 2.5;
-                    attempts++;
-                } while (attempts < maxAttempts && meshes.some(m => Math.hypot(m.position.x - x, m.position.z - z) < minDist));
+                mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ transparent: true, opacity: 0.12 })));
+                let x, z, a = 0;
+                do { x = (Math.random() - 0.5) * sx; z = (Math.random() - 0.5) * sz - 2.5; a++; }
+                while (a < maxAttempts && meshes.some(m => Math.hypot(m.position.x - x, m.position.z - z) < minDist));
                 mesh.position.set(x, (Math.random() - 0.5) * 3, z);
                 mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 3);
                 mesh.userData = {
@@ -316,7 +345,10 @@
                 group.add(mesh);
                 meshes.push(mesh);
             }
+
+            camera.position.z = 5;
             applyTheme(getTheme());
+            startAnim();
         }
 
         function applyTheme(theme) {
@@ -327,41 +359,23 @@
                 m.material.color.setHex(pal[i % pal.length]);
                 m.children[0].material.color.setHex(edgeColor);
             }
-            if (theme === 'light') { accentLight.color.setHex(0x0066cc); ambientLight.color.setHex(0x606080); }
-            else { accentLight.color.setHex(0x4da6ff); ambientLight.color.setHex(0x404060); }
+            if (accentLight) accentLight.color.setHex(theme === 'light' ? 0x0066cc : 0x4da6ff);
+            if (ambientLight) ambientLight.color.setHex(theme === 'light' ? 0x606080 : 0x404060);
         }
 
-        ambientLight = new THREE.AmbientLight(0x404060, 0.5);
-        scene.add(ambientLight);
-        dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        dirLight.position.set(3, 5, 4);
-        scene.add(dirLight);
-        accentLight = new THREE.DirectionalLight(0x4da6ff, 0.4);
-        accentLight.position.set(-3, 1, 2);
-        scene.add(accentLight);
-
-        camera.position.z = 5;
-        buildScene();
-
-        let mx = 0, my = 0, tx = 0, ty = 0;
         document.addEventListener('mousemove', e => {
             const r = header.getBoundingClientRect();
             mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
             my = ((e.clientY - r.top) / r.height - 0.5) * 2;
         });
 
-        let running = true;
-        let animId = 0;
-
         function animate() {
             if (!running) { animId = 0; return; }
             animId = requestAnimationFrame(animate);
             tx += (mx * 0.6 - tx) * 0.05;
             ty += (-my * 0.4 - ty) * 0.05;
-            camera.position.x = tx;
-            camera.position.y = ty;
-            camera.lookAt(0, 0, 0);
-            group.rotation.y += 0.002;
+            if (camera) { camera.position.x = tx; camera.position.y = ty; camera.lookAt(0, 0, 0); }
+            if (group) group.rotation.y += 0.002;
             const t = performance.now() * 0.001;
             for (const m of meshes) {
                 m.rotation.x += m.userData.rot.x;
@@ -369,31 +383,31 @@
                 m.rotation.z += m.userData.rot.z;
                 m.position.y = m.userData.float.baseY + Math.sin(t * m.userData.float.speed) * m.userData.float.amp;
             }
-            try { renderer.render(scene, camera); } catch (e) { stopAnim(); }
+            try { if (renderer && scene && camera) { renderer.render(scene, camera); lastFrameTime = performance.now(); } }
+            catch (e) { stopAnim(); clearTimeout(rebuildTimer); rebuildTimer = setTimeout(() => initScene(), 500); }
         }
 
         function stopAnim() { running = false; if (animId) { cancelAnimationFrame(animId); animId = 0; } }
-        function startAnim() { if (animId) return; running = true; animate(); }
-
-        animate();
+        function startAnim() { if (animId || !renderer) return; running = true; animate(); }
 
         window.addEventListener('resize', () => {
-            const w = header.clientWidth, h = header.clientHeight;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
+            if (camera && renderer) { camera.aspect = header.clientWidth / header.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(header.clientWidth, header.clientHeight); }
         });
 
-        window.__updateSceneTheme = (theme) => {
-            applyTheme(theme);
-        };
+        window.__updateSceneTheme = (theme) => { applyTheme(theme); };
 
-        canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stopAnim(); });
-        canvas.addEventListener('webglcontextrestored', () => { startAnim(); });
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) stopAnim();
             else startAnim();
         });
+
+        setInterval(() => {
+            if (running && !document.hidden && renderer && performance.now() - lastFrameTime > 4000) {
+                stopAnim(); initScene();
+            }
+        }, 2000);
+
+        initScene();
     </script>
 
     <script>
