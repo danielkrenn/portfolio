@@ -8,8 +8,10 @@
         :root { --bg: #f4f4f4; --text: #333; --card: white; --accent: #0066cc; }
         [data-theme="dark"] { --bg: #1a1a1a; --text: #e0e0e0; --card: #2a2a2a; --accent: #4da6ff; }
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); line-height: 1.6; transition: background 0.3s, color 0.3s; }
-        header { background: #1a1a1a; color: white; padding: 3rem 1rem; text-align: center; }
-        header h1 { color: white; margin: 0; }
+        header { background: #000; color: white; padding: 3rem 1rem; text-align: center; }
+        header h1 { color: #f5c842; margin: 0; }
+        [data-theme="dark"] section h2 { color: #f5c842; }
+        section h2 { color: #b8860b; }
         nav { background: #222; padding: 0.8rem; text-align: center; }
         nav a { color: white; margin: 0 1rem; text-decoration: none; font-weight: bold; }
         nav a:hover { color: #4da6ff; }
@@ -25,21 +27,43 @@
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin: 1rem 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .role { margin-bottom: 1.8rem; border-left: 4px solid #0066cc; padding-left: 1rem; }
+        .role h3 { color: #4da6ff; }
         #theme-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; padding: 8px 12px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        header { position: relative; overflow: hidden; }
+        #bg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 0; }
+        header::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.85) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        header .header-content { position: relative; z-index: 2; }
     </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 <body data-theme="dark">
     <button id="theme-toggle">☀️ Light Mode</button>
 
     <header>
-        <h1><strong>Daniel Krenn</strong></h1>
-        <p style="font-size: 1.3rem;">Senior Unity Developer | Game Programmer</p>
-        <p>25+ years crafting memorable player experiences across AAA, indie, and cutting-edge interactive projects</p>
-        <p>
-            <a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | 
-            <a href="mailto:dkrenn@gmail.com" style="color: white;">dkrenn@gmail.com</a> | 
-            +61 438 300 572
-        </p>
+        <div class="header-content">
+            <h1><strong>Daniel Krenn</strong></h1>
+            <p style="font-size: 1.3rem; color: #4da6ff;">AI-Native Senior Unity Developer | Game Programmer</p>
+            <p>25+ years crafting memorable player experiences across AAA, indie, and cutting-edge interactive projects</p>
+            <p>
+                <a href="https://www.linkedin.com/in/danielkrenn" style="color: white;">LinkedIn</a> | 
+                <a href="mailto:dkrenn@gmail.com" style="color: white;">dkrenn@gmail.com</a> | 
+                +61 438 300 572
+            </p>
+        </div>
     </header>
 
     <nav>
@@ -53,11 +77,11 @@
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
-            <p>With over 25 years in the industry, I've had the privilege of working on everything from beloved AAA franchises like the <em>Spyro</em> series and <em>Ty the Tasmanian Tiger</em>, to pioneering MMORPGs, VR experiences for global brands, blockchain games, and high-precision simulation tools for civil engineering. From low-level engine systems and custom in-house engines in C++ to architecting complex multiplayer, AI, and physics-driven experiences in Unity, I've thrived on turning ambitious ideas into polished, performant realities that players love.</p>
+            <p>With over 25 years in the industry, I've had the privilege of working on everything from beloved AAA franchises like the <em>Spyro</em> series and <em>Ty the Tasmanian Tiger</em>, to pioneering MMORPGs (Pantheon: Rise of the Fallen), VR experiences for global brands, blockchain games, and high-precision simulation tools for civil engineering. From low-level engine systems and custom in-house engines in C++ to architecting complex multiplayer, AI, and physics-driven experiences in Unity, I've thrived on turning ambitious ideas into polished, performant realities that players love.</p>
             
             <p>My career has spanned massive team environments and scrappy indie/crypto projects, giving me deep expertise in 3D math, physics, tooling, and a wide range of languages and platforms. I have a proven track record in performance optimization, complex bug resolution, and delivering stable, high-quality systems under tight deadlines. Whether building mission editors, integrating emerging tech, or mentoring developers, I’m driven by the thrill of solving hard problems and shipping games/simulations that leave a lasting impression.</p>
             
-            <p><strong>Currently available for contract or full-time senior/lead roles</strong> (Brisbane or fully remote). Particularly interested in projects involving complex systems, multiplayer, AI, VR/AR, simulation, or innovative gameplay mechanics.</p>
+            <p><strong>Currently available for contract or full-time senior / lead roles</strong> (Brisbane or fully remote). Particularly interested in projects involving complex systems, multiplayer, AI, VR / AR, simulation, or innovative gameplay mechanics.</p>
         </section>
 
         <section id="featured-games">
@@ -215,37 +239,171 @@
 
         <section id="contact">
             <h2>Contact</h2>
-            <p>Open to senior/lead opportunities, contract work, or interesting projects in games, simulation, or interactive software.</p>
+            <p>Open to senior / lead opportunities, contract work, or interesting projects in games, simulation, or interactive software.</p>
             <p><strong>Phone:</strong> +61 438 300 572 | <strong>Email:</strong> <a href="mailto:dkrenn@gmail.com">dkrenn@gmail.com</a></p>
         </section>
     </div>
 
-    <footer style="text-align: center; padding: 2rem; background: #1a1a1a; color: white; margin-top: 2rem;">
+    <footer style="text-align: center; padding: 2rem; background: #000; color: white; margin-top: 2rem;">
         <p>© Daniel Krenn • Portfolio hosted on GitHub Pages</p>
     </footer>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        const header = document.querySelector('header');
+        const content = header.querySelector('.header-content');
+        const canvas = document.createElement('canvas');
+        canvas.id = 'bg-canvas';
+        header.insertBefore(canvas, content);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, header.clientWidth / header.clientHeight, 0.1, 100);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(header.clientWidth, header.clientHeight);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+        function getTheme() { return document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+
+        const DARK_PAL = [0x3d8bdb, 0x6245d8, 0x00a87e, 0xc49e30, 0xb85a3a, 0x8a5ad9];
+        const LIGHT_PAL = [0x005bb5, 0x4a33b8, 0x008e6a, 0xaa7e20, 0x9a4a30, 0x7050b3];
+
+        const GEOS = [
+            new THREE.IcosahedronGeometry(0.85, 0),
+            new THREE.OctahedronGeometry(0.8),
+            new THREE.DodecahedronGeometry(0.75),
+            new THREE.TorusKnotGeometry(0.6, 0.2, 40, 5),
+            new THREE.TetrahedronGeometry(0.85),
+            new THREE.BoxGeometry(0.9, 0.55, 0.55),
+        ];
+
+        const meshes = [];
+        let group, ambientLight, dirLight, accentLight;
+
+        function buildScene() {
+            group = new THREE.Group();
+            scene.add(group);
+
+            const isMobile = header.clientWidth < 768;
+            const count = isMobile ? 6 : 10;
+            const minDist = isMobile ? 1.5 : 2.0;
+            const sx = 8;
+            const sz = 7;
+            const maxAttempts = 100;
+
+            for (let i = 0; i < count; i++) {
+                const geo = GEOS[i % GEOS.length];
+                const mesh = new THREE.Mesh(geo.clone(), new THREE.MeshStandardMaterial({ flatShading: true, roughness: 0.5, metalness: 0.05 }));
+                const edges = new THREE.EdgesGeometry(geo);
+                mesh.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ transparent: true, opacity: 0.12 })));
+                let x, z, attempts = 0;
+                do {
+                    x = (Math.random() - 0.5) * sx;
+                    z = (Math.random() - 0.5) * sz - 2.5;
+                    attempts++;
+                } while (attempts < maxAttempts && meshes.some(m => Math.hypot(m.position.x - x, m.position.z - z) < minDist));
+                mesh.position.set(x, (Math.random() - 0.5) * 3, z);
+                mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 3);
+                mesh.userData = {
+                    rot: { x: (Math.random() - 0.5) * 0.008, y: (Math.random() - 0.5) * 0.008, z: (Math.random() - 0.5) * 0.004 },
+                    float: { speed: 0.4 + Math.random() * 0.6, amp: 0.08 + Math.random() * 0.15, baseY: mesh.position.y },
+                };
+                group.add(mesh);
+                meshes.push(mesh);
+            }
+            applyTheme(getTheme());
+        }
+
+        function applyTheme(theme) {
+            const pal = theme === 'dark' ? DARK_PAL : LIGHT_PAL;
+            const edgeColor = theme === 'dark' ? 0xffffff : 0x222222;
+            for (let i = 0; i < meshes.length; i++) {
+                const m = meshes[i];
+                m.material.color.setHex(pal[i % pal.length]);
+                m.children[0].material.color.setHex(edgeColor);
+            }
+            if (theme === 'light') { accentLight.color.setHex(0x0066cc); ambientLight.color.setHex(0x606080); }
+            else { accentLight.color.setHex(0x4da6ff); ambientLight.color.setHex(0x404060); }
+        }
+
+        ambientLight = new THREE.AmbientLight(0x404060, 0.5);
+        scene.add(ambientLight);
+        dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(3, 5, 4);
+        scene.add(dirLight);
+        accentLight = new THREE.DirectionalLight(0x4da6ff, 0.4);
+        accentLight.position.set(-3, 1, 2);
+        scene.add(accentLight);
+
+        camera.position.z = 5;
+        buildScene();
+
+        let mx = 0, my = 0, tx = 0, ty = 0;
+        document.addEventListener('mousemove', e => {
+            const r = header.getBoundingClientRect();
+            mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+            my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        });
+
+        let animId;
+        function animate() {
+            animId = requestAnimationFrame(animate);
+            tx += (mx * 0.6 - tx) * 0.05;
+            ty += (-my * 0.4 - ty) * 0.05;
+            camera.position.x = tx;
+            camera.position.y = ty;
+            camera.lookAt(0, 0, 0);
+            group.rotation.y += 0.002;
+            const t = performance.now() * 0.001;
+            for (const m of meshes) {
+                m.rotation.x += m.userData.rot.x;
+                m.rotation.y += m.userData.rot.y;
+                m.rotation.z += m.userData.rot.z;
+                m.position.y = m.userData.float.baseY + Math.sin(t * m.userData.float.speed) * m.userData.float.amp;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            const w = header.clientWidth, h = header.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        });
+
+        window.__updateSceneTheme = (theme) => {
+            applyTheme(theme);
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) cancelAnimationFrame(animId);
+            else animate();
+        });
+    </script>
 
     <script>
         const toggle = document.getElementById('theme-toggle');
         const body = document.body;
 
-        // Default to dark mode (already set in HTML) + respect saved preference
-        if (localStorage.getItem('theme') === 'light') {
-            body.removeAttribute('data-theme');
-            toggle.textContent = '🌙 Dark Mode';
-        } else {
-            toggle.textContent = '☀️ Light Mode';
-        }
-
-        toggle.addEventListener('click', () => {
-            if (body.getAttribute('data-theme') === 'dark' || !body.hasAttribute('data-theme')) {
+        function applyTheme(theme) {
+            if (theme === 'light') {
                 body.removeAttribute('data-theme');
                 toggle.textContent = '🌙 Dark Mode';
-                localStorage.setItem('theme', 'light');
             } else {
                 body.setAttribute('data-theme', 'dark');
                 toggle.textContent = '☀️ Light Mode';
-                localStorage.setItem('theme', 'dark');
             }
+            localStorage.setItem('theme', theme);
+            if (window.__updateSceneTheme) window.__updateSceneTheme(theme);
+        }
+
+        const saved = localStorage.getItem('theme') || 'dark';
+        applyTheme(saved);
+
+        toggle.addEventListener('click', () => {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            applyTheme(isDark ? 'light' : 'dark');
         });
     </script>
 </body>
