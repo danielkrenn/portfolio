@@ -264,10 +264,18 @@
         const meshes = [];
         let running = false, animId = 0, lastFrameTime = 0;
         let mx = 0, my = 0, tx = 0, ty = 0;
-        let rebuildTimer = 0;
+        let savedState = null;
 
         function isMobile() { return header.clientWidth < 768; }
         function getTheme() { return document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+
+        function saveState() {
+            savedState = meshes.map(m => ({
+                position: m.position.clone(),
+                rotation: m.rotation.clone(),
+                userData: JSON.parse(JSON.stringify(m.userData)),
+            }));
+        }
 
         function makeGeos() {
             const m = isMobile();
@@ -283,6 +291,7 @@
 
         function teardown() {
             stopAnim();
+            saveState();
             for (const m of meshes) { scene?.remove(m); m.geometry?.dispose(); m.material?.dispose(); }
             meshes.length = 0;
             if (renderer) { renderer.dispose(); }
@@ -307,8 +316,7 @@
             canvas.addEventListener('webglcontextlost', (e) => {
                 e.preventDefault();
                 stopAnim();
-                clearTimeout(rebuildTimer);
-                rebuildTimer = setTimeout(() => initScene(), 500);
+                initScene();
             });
 
             group = new THREE.Group();
@@ -333,18 +341,26 @@
                 const geo = geos[i % geos.length];
                 const mesh = new THREE.Mesh(geo.clone(), new THREE.MeshStandardMaterial({ flatShading: true, roughness: 0.5, metalness: 0.05 }));
                 mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ transparent: true, opacity: 0.12 })));
-                let x, z, a = 0;
-                do { x = (Math.random() - 0.5) * sx; z = (Math.random() - 0.5) * sz - 2.5; a++; }
-                while (a < maxAttempts && meshes.some(m => Math.hypot(m.position.x - x, m.position.z - z) < minDist));
-                mesh.position.set(x, (Math.random() - 0.5) * 3, z);
-                mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 3);
-                mesh.userData = {
-                    rot: { x: (Math.random() - 0.5) * 0.008, y: (Math.random() - 0.5) * 0.008, z: (Math.random() - 0.5) * 0.004 },
-                    float: { speed: 0.4 + Math.random() * 0.6, amp: 0.08 + Math.random() * 0.15, baseY: mesh.position.y },
-                };
+                if (savedState && savedState[i]) {
+                    const s = savedState[i];
+                    mesh.position.copy(s.position);
+                    mesh.rotation.copy(s.rotation);
+                    mesh.userData = s.userData;
+                } else {
+                    let x, z, a = 0;
+                    do { x = (Math.random() - 0.5) * sx; z = (Math.random() - 0.5) * sz - 2.5; a++; }
+                    while (a < maxAttempts && meshes.some(m => Math.hypot(m.position.x - x, m.position.z - z) < minDist));
+                    mesh.position.set(x, (Math.random() - 0.5) * 3, z);
+                    mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 3);
+                    mesh.userData = {
+                        rot: { x: (Math.random() - 0.5) * 0.008, y: (Math.random() - 0.5) * 0.008, z: (Math.random() - 0.5) * 0.004 },
+                        float: { speed: 0.4 + Math.random() * 0.6, amp: 0.08 + Math.random() * 0.15, baseY: mesh.position.y },
+                    };
+                }
                 group.add(mesh);
                 meshes.push(mesh);
             }
+            savedState = null;
 
             camera.position.z = 5;
             applyTheme(getTheme());
@@ -384,7 +400,7 @@
                 m.position.y = m.userData.float.baseY + Math.sin(t * m.userData.float.speed) * m.userData.float.amp;
             }
             try { if (renderer && scene && camera) { renderer.render(scene, camera); lastFrameTime = performance.now(); } }
-            catch (e) { stopAnim(); clearTimeout(rebuildTimer); rebuildTimer = setTimeout(() => initScene(), 500); }
+            catch (e) { stopAnim(); initScene(); }
         }
 
         function stopAnim() { running = false; if (animId) { cancelAnimationFrame(animId); animId = 0; } }
